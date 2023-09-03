@@ -3,7 +3,8 @@ import { projectController } from "../controller";
 
 const router: Router = Router();
 
-// get single flower vote result in library
 router.get("/list", projectController.list);
+
+router.get("/:projectId", projectController.single);
 
 export default router;

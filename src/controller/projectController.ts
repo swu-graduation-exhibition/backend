@@ -4,13 +4,7 @@ import { SwuIdException } from "../models/SwuException";
 import { rm, sc } from "../constants";
 import { fail, success } from "../constants/response";
 import { projectService } from "../service";
-// import { alarmService } from "../service";
 
-/**
- * push into notifications
- *
- * @api {post} /alarm/push
- */
 const list = async (req: Request, res: Response, next: NextFunction) => {
     const error = validationResult(req);
     if (!error.isEmpty()) {
@@ -31,8 +25,29 @@ const list = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
+const single = async (req: Request, res: Response, next: NextFunction) => {
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+        return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
+    }
+
+    const { projectId } = req.params;
+
+    if (!projectId) {
+        return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
+    }
+
+    try {
+        const project = await projectService.getProject(+projectId);
+        return res.status(sc.OK).send(success(sc.OK, rm.GET_PROJECT_LIST_SUCCESS, project));
+    } catch (e) {
+        return next(e);
+    }
+};
+
 const projectController = {
     list,
+    single,
 };
 
 export default projectController;
