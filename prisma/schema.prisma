@@ -8,7 +8,7 @@ datasource db {
 }
 
 model designer {
-  designer_id      BigInt             @id @default(autoincrement())
+  designer_id      Int                @id @default(autoincrement())
   name_ko          String?            @db.VarChar
   name_eng         String?            @db.VarChar
   desc             String?            @db.VarChar
@@ -16,33 +16,46 @@ model designer {
   instagram        String?            @db.VarChar
   behance          String?            @db.VarChar
   profile          String?            @db.VarChar
+  field            String?            @db.VarChar
   designer_comment designer_comment[]
+  member           member[]
 }
 
 model designer_comment {
-  comment_id  BigInt    @id @unique @default(autoincrement())
-  designer_id BigInt?
+  comment_id  Int       @id @default(autoincrement())
+  designer_id Int?
   title       String?   @db.VarChar
   content     String?   @db.VarChar
   created_at  DateTime? @db.Timestamp(6)
   designer    designer? @relation(fields: [designer_id], references: [designer_id], onDelete: NoAction, onUpdate: NoAction, map: "designer_comment_designer_designer_id_fk")
 }
 
+model member {
+  member_id   Int       @id @default(autoincrement())
+  designer_id Int?
+  project_id  Int?
+  designer    designer? @relation(fields: [designer_id], references: [designer_id], onDelete: NoAction, onUpdate: NoAction, map: "member_designer_designer_id_fk")
+  project     project?  @relation(fields: [project_id], references: [project_id], onDelete: NoAction, onUpdate: NoAction, map: "member_project_project_id_fk")
+
+  @@index([project_id], map: "member_project_id_index")
+}
+
 model project {
-  project_id      BigInt            @id @default(autoincrement())
+  project_id      Int               @id @default(autoincrement())
   title           String?           @db.VarChar
-  member          String?           @db.VarChar
+  members         String?           @db.VarChar
   desc            String?           @db.VarChar
   link            String?           @db.VarChar
   type            Int?
   order           Int?
   photo           String?           @db.VarChar
+  member          member[]
   project_comment project_comment[]
 }
 
 model project_comment {
-  project_comment_id BigInt    @id @default(autoincrement())
-  project_id         BigInt?
+  project_comment_id Int       @id @default(autoincrement())
+  project_id         Int?
   title              String?   @db.VarChar
   content            String?   @db.VarChar
   created_at         DateTime? @db.Timestamp(6)
