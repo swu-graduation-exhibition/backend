@@ -35,6 +35,8 @@ model project {
   desc            String?           @db.VarChar
   link            String?           @db.VarChar
   type            Int?
+  order           Int?
+  photo           String?           @db.VarChar
   project_comment project_comment[]
 }
 
