@@ -17,6 +17,7 @@ model designer {
   behance          String?            @db.VarChar
   profile          String?            @db.VarChar
   field            String?            @db.VarChar
+  email            String?            @db.VarChar
   designer_comment designer_comment[]
   member           member[]
 }
