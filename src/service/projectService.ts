@@ -62,16 +62,21 @@ const getProject = async (projectId: number) => {
         link: project?.link as string,
         photo: project?.photo as string,
         memberList: members.map((data: any) => {
-            return data.designer;
+            return {
+                designerId: data.designer.designer_id,
+                name: data.designer.name_ko,
+                field: data.designer.field,
+                profile: data.designer.profile,
+            };
         }),
     };
 
     return projectResponseDTO;
 };
 
-const alarmService = {
+const projectService = {
     getProjectList,
     getProject,
 };
 
-export default alarmService;
+export default projectService;

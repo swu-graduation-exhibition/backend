@@ -39,7 +39,7 @@ const single = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
         const project = await projectService.getProject(+projectId);
-        return res.status(sc.OK).send(success(sc.OK, rm.GET_PROJECT_LIST_SUCCESS, project));
+        return res.status(sc.OK).send(success(sc.OK, rm.GET_PROJECT_SUCCESS, project));
     } catch (e) {
         return next(e);
     }

@@ -9,7 +9,8 @@ export interface ProjectResponseDTO {
 }
 
 interface ProjectResponseVO {
+    designerId: number;
     name: string;
-    type: string;
+    field: string;
     profile: string;
 }
