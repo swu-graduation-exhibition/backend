@@ -28,6 +28,7 @@ model designer_comment {
   title       String?   @db.VarChar
   content     String?   @db.VarChar
   created_at  DateTime? @db.Timestamp(6)
+  sender      String?   @db.VarChar
   designer    designer? @relation(fields: [designer_id], references: [designer_id], onDelete: NoAction, onUpdate: NoAction, map: "designer_comment_designer_designer_id_fk")
 }
 
@@ -60,5 +61,6 @@ model project_comment {
   title              String?   @db.VarChar
   content            String?   @db.VarChar
   created_at         DateTime? @db.Timestamp(6)
+  sender             String?   @db.VarChar
   project            project?  @relation(fields: [project_id], references: [project_id], onDelete: NoAction, onUpdate: NoAction, map: "project_comment_project_project_id_fk")
 }
