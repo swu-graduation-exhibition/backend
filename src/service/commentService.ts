@@ -26,7 +26,6 @@ const getDesignerCommentList = async (id: string, page: number) => {
         },
     });
 
-    console.log(desingerCommentList);
     const result = desingerCommentList.map((data: any) => {
         let converted = {
             ...data,
