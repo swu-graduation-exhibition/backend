@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import dayjs from "dayjs";
 
 const prisma = new PrismaClient();
 
@@ -70,9 +71,33 @@ const getProjectCommentList = async (id: number, page: number) => {
     return result;
 };
 
+const createDesignerComment = async (sender: string, receiver: number, content: string) => {
+    await prisma.designer_comment.create({
+        data: {
+            designer_id: receiver,
+            content: content,
+            sender: sender,
+            created_at: dayjs().add(9, "hour").format(),
+        },
+    });
+};
+
+const createProjectComment = async (sender: string, receiver: number, content: string) => {
+    await prisma.project_comment.create({
+        data: {
+            project_id: receiver,
+            content: content,
+            sender: sender,
+            created_at: dayjs().add(9, "hour").format(),
+        },
+    });
+};
+
 const commentService = {
     getDesignerCommentList,
     getProjectCommentList,
+    createDesignerComment,
+    createProjectComment,
 };
 
 export default commentService;
