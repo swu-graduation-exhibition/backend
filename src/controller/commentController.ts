@@ -24,7 +24,9 @@ const getDesignerComment = async (req: Request, res: Response, next: NextFunctio
 
     try {
         const commentList = await commentService.getDesignerCommentList(id, +page);
-        return res.status(sc.OK).send(success(sc.OK, rm.GET_PROJECT_LIST_SUCCESS, commentList));
+        return res
+            .status(sc.OK)
+            .send(success(sc.OK, rm.GET_DESIGNER_COMMENT_LIST_SUCCESS, commentList));
     } catch (e) {
         return next(e);
     }
@@ -44,7 +46,49 @@ const getProjectComment = async (req: Request, res: Response, next: NextFunction
 
     try {
         const commentList = await commentService.getProjectCommentList(+id, +page);
-        return res.status(sc.OK).send(success(sc.OK, rm.GET_PROJECT_SUCCESS, commentList));
+        return res
+            .status(sc.OK)
+            .send(success(sc.OK, rm.GET_PROJECT_COMMENT_LIST_SUCCESS, commentList));
+    } catch (e) {
+        return next(e);
+    }
+};
+
+const createDesignerComment = async (req: Request, res: Response, next: NextFunction) => {
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+        return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
+    }
+
+    const { sender, receiver, content } = req.body;
+
+    if (!sender || !receiver || !content) {
+        return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
+    }
+
+    try {
+        await commentService.createDesignerComment(sender, +receiver, content);
+        return res.status(sc.OK).send(success(sc.OK, rm.CREATE_DESIGNER_COMMENT_SUCCESS));
+    } catch (e) {
+        return next(e);
+    }
+};
+
+const createProjectComment = async (req: Request, res: Response, next: NextFunction) => {
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+        return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
+    }
+
+    const { sender, receiver, content } = req.body;
+
+    if (!sender || !receiver || !content) {
+        return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
+    }
+
+    try {
+        await commentService.createProjectComment(sender, +receiver, content);
+        return res.status(sc.OK).send(success(sc.OK, rm.CREATE_PROJECT_COMMENT_SUCCESS));
     } catch (e) {
         return next(e);
     }
@@ -53,6 +97,8 @@ const getProjectComment = async (req: Request, res: Response, next: NextFunction
 const commentController = {
     getDesignerComment,
     getProjectComment,
+    createDesignerComment,
+    createProjectComment,
 };
 
 export default commentController;
