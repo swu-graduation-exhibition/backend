@@ -3,8 +3,8 @@ import { commentController } from "../controller";
 
 const router: Router = Router();
 
-router.get("/designer", commentController.designer);
+router.get("/designer", commentController.getDesignerComment);
 
-router.get("/project", commentController.project);
+router.get("/project", commentController.getProjectComment);
 
 export default router;

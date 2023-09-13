@@ -5,7 +5,7 @@ import { rm, sc } from "../constants";
 import { fail, success } from "../constants/response";
 import { commentService } from "../service";
 
-const designer = async (req: Request, res: Response, next: NextFunction) => {
+const getDesignerComment = async (req: Request, res: Response, next: NextFunction) => {
     const error = validationResult(req);
     if (!error.isEmpty()) {
         return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
@@ -30,7 +30,7 @@ const designer = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const project = async (req: Request, res: Response, next: NextFunction) => {
+const getProjectComment = async (req: Request, res: Response, next: NextFunction) => {
     const error = validationResult(req);
     if (!error.isEmpty()) {
         return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
@@ -51,8 +51,8 @@ const project = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const commentController = {
-    designer,
-    project,
+    getDesignerComment,
+    getProjectComment,
 };
 
 export default commentController;
