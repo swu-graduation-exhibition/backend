@@ -7,4 +7,8 @@ router.get("/designer", commentController.getDesignerComment);
 
 router.get("/project", commentController.getProjectComment);
 
+router.post("/designer", commentController.createDesignerComment);
+
+router.post("/project", commentController.createProjectComment);
+
 export default router;
