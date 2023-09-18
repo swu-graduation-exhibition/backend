@@ -15,11 +15,11 @@ const countDesginerComment = async (id: string) => {
     return count;
 };
 
-const countProjectComment = async (id: string) => {
+const countProjectComment = async (id: number) => {
     const count = await prisma.designer_comment.count({
         where: {
             designer_id: {
-                in: [+id, 58],
+                in: [id, 58],
             },
         },
     });
@@ -61,13 +61,13 @@ const getDesignerComments = async (id: string, page: number) => {
     });
 };
 
-const getProjectComments = async (id: string, page: number) => {
+const getProjectComments = async (id: number, page: number) => {
     const projectCommentList = await prisma.project_comment.findMany({
         skip: 8 * (page - 1),
         take: 8,
         where: {
             project_id: {
-                in: [+id, 58],
+                in: [id, 58],
             },
         },
         select: {
@@ -107,7 +107,7 @@ const getDesignerCommentList = async (id: string, page: number) => {
     return result;
 };
 
-const getProjectCommentList = async (id: string, page: number) => {
+const getProjectCommentList = async (id: number, page: number) => {
     const [projectCommentList, count] = await Promise.all([
         await getProjectComments(id, page),
         await countProjectComment(id),
