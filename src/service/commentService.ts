@@ -3,7 +3,31 @@ import dayjs from "dayjs";
 
 const prisma = new PrismaClient();
 
-const getDesignerCommentList = async (id: string, page: number) => {
+const countDesginerComment = async (id: string) => {
+    const count = await prisma.designer_comment.count({
+        where: {
+            designer_id: {
+                in: [+id, 58],
+            },
+        },
+    });
+
+    return count;
+};
+
+const countProjectComment = async (id: string) => {
+    const count = await prisma.designer_comment.count({
+        where: {
+            designer_id: {
+                in: [+id, 58],
+            },
+        },
+    });
+
+    return count;
+};
+
+const getDesignerComments = async (id: string, page: number) => {
     const concludeQuery =
         id === ""
             ? {}
@@ -27,7 +51,7 @@ const getDesignerCommentList = async (id: string, page: number) => {
         },
     });
 
-    const result = desingerCommentList.map((data: any) => {
+    return desingerCommentList.map((data: any) => {
         let converted = {
             ...data,
             createdAt: data.created_at,
@@ -35,17 +59,15 @@ const getDesignerCommentList = async (id: string, page: number) => {
         delete converted.created_at;
         return converted;
     });
-
-    return result;
 };
 
-const getProjectCommentList = async (id: number, page: number) => {
+const getProjectComments = async (id: string, page: number) => {
     const projectCommentList = await prisma.project_comment.findMany({
         skip: 8 * (page - 1),
         take: 8,
         where: {
             project_id: {
-                in: [id, 58],
+                in: [+id, 58],
             },
         },
         select: {
@@ -58,7 +80,7 @@ const getProjectCommentList = async (id: number, page: number) => {
         },
     });
 
-    const result = projectCommentList.map((data: any) => {
+    const projectList = projectCommentList.map((data: any) => {
         let converted = {
             ...data,
             createdAt: data.created_at,
@@ -67,6 +89,34 @@ const getProjectCommentList = async (id: number, page: number) => {
         delete converted.created_at;
         return converted;
     });
+
+    return projectList;
+};
+
+const getDesignerCommentList = async (id: string, page: number) => {
+    const [designerCommentList, count] = await Promise.all([
+        await getDesignerComments(id, page),
+        await countDesginerComment(id),
+    ]);
+
+    const result = {
+        designerCommentList: designerCommentList,
+        count: count,
+    };
+
+    return result;
+};
+
+const getProjectCommentList = async (id: string, page: number) => {
+    const [projectCommentList, count] = await Promise.all([
+        await getProjectComments(id, page),
+        await countProjectComment(id),
+    ]);
+
+    const result = {
+        projectCommentList: projectCommentList,
+        count: count,
+    };
 
     return result;
 };
