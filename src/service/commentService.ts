@@ -16,18 +16,16 @@ const countDesginerComment = async (id: string) => {
 };
 
 const countProjectComment = async (id: number) => {
-    const count = await prisma.designer_comment.count({
+    const count = await prisma.project_comment.count({
         where: {
-            designer_id: {
-                in: [id, 49],
-            },
+            project_id: id,
         },
     });
 
     return count;
 };
 
-const getDesignerComments = async (id: string, page: number) => {
+const getDesignerComments = async (id: string, page: number, limit: number) => {
     const concludeQuery =
         id === ""
             ? {}
@@ -38,8 +36,8 @@ const getDesignerComments = async (id: string, page: number) => {
               };
 
     const desingerCommentList = await prisma.designer_comment.findMany({
-        skip: 8 * (page - 1),
-        take: 8,
+        skip: limit * (page - 1),
+        take: limit,
         where: concludeQuery,
         select: {
             sender: true,
@@ -68,14 +66,12 @@ const getDesignerComments = async (id: string, page: number) => {
     });
 };
 
-const getProjectComments = async (id: number, page: number) => {
+const getProjectComments = async (id: number, page: number, limit: number) => {
     const projectCommentList = await prisma.project_comment.findMany({
-        skip: 8 * (page - 1),
-        take: 8,
+        skip: limit * (page - 1),
+        take: limit,
         where: {
-            project_id: {
-                in: [id, 49],
-            },
+            project_id: id,
         },
         select: {
             sender: true,
@@ -100,9 +96,9 @@ const getProjectComments = async (id: number, page: number) => {
     return projectList;
 };
 
-const getDesignerCommentList = async (id: string, page: number) => {
+const getDesignerCommentList = async (id: string, page: number, limit: number) => {
     const [designerCommentList, count] = await Promise.all([
-        await getDesignerComments(id, page),
+        await getDesignerComments(id, page, limit),
         await countDesginerComment(id),
     ]);
 
@@ -114,9 +110,9 @@ const getDesignerCommentList = async (id: string, page: number) => {
     return result;
 };
 
-const getProjectCommentList = async (id: number, page: number) => {
+const getProjectCommentList = async (id: number, page: number, limit: number) => {
     const [projectCommentList, count] = await Promise.all([
-        await getProjectComments(id, page),
+        await getProjectComments(id, page, limit),
         await countProjectComment(id),
     ]);
 
