@@ -7,7 +7,7 @@ const countDesginerComment = async (id: string) => {
     const count = await prisma.designer_comment.count({
         where: {
             designer_id: {
-                in: [+id, 58],
+                in: [+id, 49],
             },
         },
     });
@@ -19,7 +19,7 @@ const countProjectComment = async (id: number) => {
     const count = await prisma.designer_comment.count({
         where: {
             designer_id: {
-                in: [id, 58],
+                in: [id, 49],
             },
         },
     });
@@ -33,7 +33,7 @@ const getDesignerComments = async (id: string, page: number) => {
             ? {}
             : {
                   designer_id: {
-                      in: [+id, 58],
+                      in: [+id, 49],
                   },
               };
 
@@ -74,7 +74,7 @@ const getProjectComments = async (id: number, page: number) => {
         take: 8,
         where: {
             project_id: {
-                in: [id, 58],
+                in: [id, 49],
             },
         },
         select: {
