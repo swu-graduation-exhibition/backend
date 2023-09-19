@@ -13,8 +13,9 @@ const getDesignerComment = async (req: Request, res: Response, next: NextFunctio
 
     let id = req.query.id as string;
     let page = req.query.page as string;
+    let limit = req.query.limit as string;
 
-    if (!page) {
+    if (!page || !limit) {
         return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
     }
 
@@ -23,7 +24,7 @@ const getDesignerComment = async (req: Request, res: Response, next: NextFunctio
     }
 
     try {
-        const commentList = await commentService.getDesignerCommentList(id, +page);
+        const commentList = await commentService.getDesignerCommentList(id, +page, +limit);
         return res
             .status(sc.OK)
             .send(success(sc.OK, rm.GET_DESIGNER_COMMENT_LIST_SUCCESS, commentList));
@@ -38,14 +39,14 @@ const getProjectComment = async (req: Request, res: Response, next: NextFunction
         return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
     }
 
-    const { id, page } = req.query;
+    const { id, page, limit } = req.query;
 
-    if (!id || !page) {
+    if (!id || !page || !limit) {
         return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
     }
 
     try {
-        const commentList = await commentService.getProjectCommentList(+id, +page);
+        const commentList = await commentService.getProjectCommentList(+id, +page, +limit);
         return res
             .status(sc.OK)
             .send(success(sc.OK, rm.GET_PROJECT_COMMENT_LIST_SUCCESS, commentList));
