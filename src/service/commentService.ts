@@ -45,6 +45,11 @@ const getDesignerComments = async (id: string, page: number) => {
             sender: true,
             content: true,
             created_at: true,
+            designer: {
+                select: {
+                    name_ko: true,
+                },
+            },
         },
         orderBy: {
             created_at: "desc",
@@ -54,9 +59,11 @@ const getDesignerComments = async (id: string, page: number) => {
     return desingerCommentList.map((data: any) => {
         let converted = {
             ...data,
+            receiver: data.designer.name_ko,
             createdAt: data.created_at,
         };
         delete converted.created_at;
+        delete converted.designer;
         return converted;
     });
 };
