@@ -67,8 +67,6 @@ const getDesignerComments = async (id: string, page: number, limit: number, isSi
         },
     });
 
-    console.log("ESTSET" + desingerCommentList.length);
-
     return desingerCommentList.map((data: any) => {
         let converted = {
             ...data,
