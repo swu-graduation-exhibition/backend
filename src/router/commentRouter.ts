@@ -7,6 +7,8 @@ router.get("/designer", commentController.getDesignerComment);
 
 router.get("/project", commentController.getProjectComment);
 
+router.get("/list", commentController.getCommentList);
+
 router.post("/designer", commentController.createDesignerComment);
 
 router.post("/project", commentController.createProjectComment);

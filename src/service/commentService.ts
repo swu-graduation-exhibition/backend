@@ -3,13 +3,22 @@ import dayjs from "dayjs";
 
 const prisma = new PrismaClient();
 
-const countDesginerComment = async (id: string) => {
+const countDesginerComment = async (id: string, isSingle: boolean) => {
+    const concludeQuery =
+        id === ""
+            ? {}
+            : isSingle
+            ? {
+                  designer_id: {
+                      in: [+id, 49],
+                  },
+              }
+            : {
+                  designer_id: +id,
+              };
+
     const count = await prisma.designer_comment.count({
-        where: {
-            designer_id: {
-                in: [+id, 49],
-            },
-        },
+        where: concludeQuery,
     });
 
     return count;
@@ -25,14 +34,18 @@ const countProjectComment = async (id: number) => {
     return count;
 };
 
-const getDesignerComments = async (id: string, page: number, limit: number) => {
+const getDesignerComments = async (id: string, page: number, limit: number, isSingle: boolean) => {
     const concludeQuery =
         id === ""
             ? {}
-            : {
+            : isSingle
+            ? {
                   designer_id: {
                       in: [+id, 49],
                   },
+              }
+            : {
+                  designer_id: +id,
               };
 
     const desingerCommentList = await prisma.designer_comment.findMany({
@@ -53,6 +66,8 @@ const getDesignerComments = async (id: string, page: number, limit: number) => {
             created_at: "desc",
         },
     });
+
+    console.log("ESTSET" + desingerCommentList.length);
 
     return desingerCommentList.map((data: any) => {
         let converted = {
@@ -98,8 +113,8 @@ const getProjectComments = async (id: number, page: number, limit: number) => {
 
 const getDesignerCommentList = async (id: string, page: number, limit: number) => {
     const [designerCommentList, count] = await Promise.all([
-        await getDesignerComments(id, page, limit),
-        await countDesginerComment(id),
+        await getDesignerComments(id, page, limit, true),
+        await countDesginerComment(id, true),
     ]);
 
     const result = {
@@ -118,6 +133,20 @@ const getProjectCommentList = async (id: number, page: number, limit: number) =>
 
     const result = {
         projectCommentList: projectCommentList,
+        count: count,
+    };
+
+    return result;
+};
+
+const getCommentList = async (id: string, page: number, limit: number) => {
+    const [commentList, count] = await Promise.all([
+        await getDesignerComments(id, page, limit, false),
+        await countDesginerComment(id, false),
+    ]);
+
+    const result = {
+        commentList: commentList,
         count: count,
     };
 
@@ -149,6 +178,7 @@ const createProjectComment = async (sender: string, receiver: number, content: s
 const commentService = {
     getDesignerCommentList,
     getProjectCommentList,
+    getCommentList,
     createDesignerComment,
     createProjectComment,
 };
