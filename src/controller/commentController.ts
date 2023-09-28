@@ -19,6 +19,10 @@ const getDesignerComment = async (req: Request, res: Response, next: NextFunctio
         return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
     }
 
+    if (+page == 0) {
+        return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
+    }
+
     try {
         const commentList = await commentService.getDesignerCommentList(id, +page, +limit);
         return res
@@ -43,6 +47,10 @@ const getCommentList = async (req: Request, res: Response, next: NextFunction) =
         return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
     }
 
+    if (+page == 0) {
+        return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
+    }
+
     if (!id) {
         id = "";
     }
@@ -64,6 +72,10 @@ const getProjectComment = async (req: Request, res: Response, next: NextFunction
     const { id, page, limit } = req.query;
 
     if (!id || !page || !limit) {
+        return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
+    }
+
+    if (+page == 0) {
         return next(new SwuIdException(sc.BAD_REQUEST, false, rm.BAD_REQUEST));
     }
 
