@@ -4,7 +4,6 @@ export interface DesignerResponseDTO {
     koreanName: string;
     englishName: string;
     desc: string;
-    tel: string;
     email: string;
     instagram: string;
     behance: string;

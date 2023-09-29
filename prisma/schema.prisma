@@ -11,8 +11,7 @@ model designer {
   designer_id      Int                @id @default(autoincrement())
   name_ko          String?            @db.VarChar
   name_eng         String?            @db.VarChar
-  desc             String?            @db.VarChar
-  tel              String?            @db.VarChar
+  desc             String?            @db.VarChar(1000)
   instagram        String?            @db.VarChar
   behance          String?            @db.VarChar
   profile          String?            @db.VarChar
