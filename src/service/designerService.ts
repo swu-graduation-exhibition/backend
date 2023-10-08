@@ -11,11 +11,12 @@ const getDesignerList = async () => {
             field: true,
             profile: true,
         },
+        orderBy: {
+            designer_id: "asc",
+        },
     });
 
-    let sortedList = desingerList.sort((a: any, b: any) => a.name_ko[0] - b.name_ko[0]);
-
-    const filteredList = sortedList.filter((data) => data.name_ko !== "모두에게");
+    const filteredList = desingerList.filter((data) => data.name_ko !== "모두에게");
 
     return filteredList;
 };
