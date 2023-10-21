@@ -49,6 +49,7 @@ const getDesigner = async (designerId: number) => {
                     title: true,
                     photo: true,
                     type: true,
+                    members: true,
                 },
             },
         },
@@ -69,6 +70,7 @@ const getDesigner = async (designerId: number) => {
                 photo: data.project.photo,
                 title: data.project.title,
                 type: data.project.type,
+                members: data.project.members,
             };
         }),
     };
