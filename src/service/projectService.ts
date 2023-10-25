@@ -34,7 +34,7 @@ const getProject = async (projectId: number) => {
             desc: true,
             link: true,
             type: true,
-            photo: true,
+            photos: true,
         },
     });
 
@@ -60,7 +60,7 @@ const getProject = async (projectId: number) => {
         members: project?.members as string,
         desc: project?.desc as string,
         link: project?.link as string,
-        photo: project?.photo as string,
+        photos: project?.photos as string[],
         memberList: members.map((data: any) => {
             return {
                 designerId: data.designer.designer_id,

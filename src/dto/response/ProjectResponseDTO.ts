@@ -4,7 +4,7 @@ export interface ProjectResponseDTO {
     members: string;
     desc: string;
     link: string;
-    photo: string;
+    photos: string[];
     memberList: ProjectResponseVO[];
 }
 
