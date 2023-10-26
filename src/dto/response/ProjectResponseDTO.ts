@@ -5,6 +5,7 @@ export interface ProjectResponseDTO {
     desc: string;
     link: string;
     photos: string[];
+    teamName: string;
     memberList: ProjectResponseVO[];
 }
 

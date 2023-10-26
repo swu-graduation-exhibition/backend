@@ -4,12 +4,13 @@ import { ProjectResponseDTO } from "../dto/response/ProjectResponseDTO";
 const prisma = new PrismaClient();
 
 const getProjectList = async (type: number) => {
-    const projectList = await prisma.project.findMany({
+    const getProjectList = await prisma.project.findMany({
         select: {
             title: true,
             members: true,
             type: true,
             photo: true,
+            project_id: true,
         },
         where: {
             type: type,
@@ -17,6 +18,16 @@ const getProjectList = async (type: number) => {
         orderBy: {
             order: "asc",
         },
+    });
+
+    const projectList = getProjectList.map((project) => {
+        return {
+            title: project.title,
+            members: project.members,
+            type: project.type,
+            photo: project.photo,
+            projectId: project.project_id,
+        };
     });
 
     return projectList;
@@ -35,6 +46,7 @@ const getProject = async (projectId: number) => {
             link: true,
             type: true,
             photos: true,
+            team_name: true,
         },
     });
 
@@ -61,6 +73,7 @@ const getProject = async (projectId: number) => {
         desc: project?.desc as string,
         link: project?.link as string,
         photos: project?.photos as string[],
+        teamName: project?.team_name as string,
         memberList: members.map((data: any) => {
             return {
                 designerId: data.designer.designer_id,

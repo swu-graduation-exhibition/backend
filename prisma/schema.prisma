@@ -51,6 +51,7 @@ model project {
   order           Int?
   photo           String?           @db.VarChar
   photos          String[]          @db.VarChar(500)
+  team_name       String?           @db.VarChar(200)
   member          member[]
   project_comment project_comment[]
 }
