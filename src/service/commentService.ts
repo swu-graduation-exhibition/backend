@@ -3,16 +3,10 @@ import dayjs from "dayjs";
 
 const prisma = new PrismaClient();
 
-const countDesginerComment = async (id: string, isSingle: boolean) => {
+const countDesginerComment = async (id: string) => {
     const concludeQuery =
         id === ""
             ? {}
-            : isSingle
-            ? {
-                  designer_id: {
-                      in: [+id, 49],
-                  },
-              }
             : {
                   designer_id: +id,
               };
@@ -34,16 +28,10 @@ const countProjectComment = async (id: number) => {
     return count;
 };
 
-const getDesignerComments = async (id: string, page: number, limit: number, isSingle: boolean) => {
+const getDesignerComments = async (id: string, page: number, limit: number) => {
     const concludeQuery =
         id === ""
             ? {}
-            : isSingle
-            ? {
-                  designer_id: {
-                      in: [+id, 49],
-                  },
-              }
             : {
                   designer_id: +id,
               };
@@ -111,8 +99,8 @@ const getProjectComments = async (id: number, page: number, limit: number) => {
 
 const getDesignerCommentList = async (id: string, page: number, limit: number) => {
     const [designerCommentList, count] = await Promise.all([
-        await getDesignerComments(id, page, limit, true),
-        await countDesginerComment(id, true),
+        await getDesignerComments(id, page, limit),
+        await countDesginerComment(id),
     ]);
 
     const result = {
@@ -139,8 +127,8 @@ const getProjectCommentList = async (id: number, page: number, limit: number) =>
 
 const getCommentList = async (id: string, page: number, limit: number) => {
     const [commentList, count] = await Promise.all([
-        await getDesignerComments(id, page, limit, false),
-        await countDesginerComment(id, false),
+        await getDesignerComments(id, page, limit),
+        await countDesginerComment(id),
     ]);
 
     const result = {
